@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pop-prod
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: pop-prod
+  template:
+    metadata:
+      labels:
+        app: pop-prod
+    spec:
+      containers:
+        - name: pop-prod
+          image: tailwindtraders/popular-product.api:latest
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pop-prod
+spec:
+  type: NodePort
+  selector:
+    app: pop-prod
+  ports:
+    - port: 80
+      targetPort: 80

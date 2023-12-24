@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tailwindweb
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: tailwindweb
+  template:
+    metadata:
+      labels:
+        app: tailwindweb
+    spec:
+      containers:
+        - name: tailwindweb
+          image: tailwindtraders/tailwindtraderswebsite:latest
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tailwindweb
+spec:
+  type: LoadBalancer
+  selector:
+    app: tailwindweb
+  ports:
+    - port: 80
+      targetPort: 80

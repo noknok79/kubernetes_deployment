@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pop-visit
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: pop-visit
+  template:
+    metadata:
+      labels:
+        app: pop-visit
+    spec:
+      containers:
+        - name: pop-visit
+          image: tailwindtraders/product-visits.function:latest
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pop-visit
+spec:
+  type: NodePort
+  selector:
+    app: pop-visit
+  ports:
+    - port: 80
+      targetPort: 80

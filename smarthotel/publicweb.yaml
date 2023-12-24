@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: publicweb
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: publicweb
+  template:
+    metadata:
+      labels:
+        app: publicweb
+    spec:
+      containers:
+        - name: publicweb
+          image: smarthotels/publicweb:latest
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: publicweb
+spec:
+  type: LoadBalancer
+  selector:
+    app: publicweb
+  ports:
+    - port: 80
+      targetPort: 80
