@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshoppublicapi
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: eshoppublicapi
+  template:
+    metadata:
+      labels:
+        app: eshoppublicapi
+    spec:
+      containers:
+        - name: eshoppublicapi
+          image: noknok79/eshoppublicapi:latest
+          ports:
+            - containerPort: 443
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshoppublicapi
+spec:
+  type: NodePort
+  selector:
+    app: eshoppublicapi
+  ports:
+    - port: 5200
+      targetPort: 80

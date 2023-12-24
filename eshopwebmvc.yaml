@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshopwebmvc
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: eshopwebmvc
+  template:
+    metadata:
+      labels:
+        app: eshopwebmvc
+    spec:
+      containers:
+        - name: eshopwebmvc
+          image: noknok79/eshopwebmvc:latest
+          ports:
+            - containerPort: 5106
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshopwebmvc
+spec:
+  type: LoadBalancer
+  selector:
+    app: eshopwebmvc
+  ports:
+    - port: 80
+      targetPort: 80

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parts-web
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: parts-web
+  template:
+    metadata:
+      labels:
+        app: parts-web
+    spec:
+      containers:
+        - name: parts-web
+          image: noknok79/parts-web:latest
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: parts-web
+spec:
+  type: LoadBalancer
+  selector:
+    app: parts-web
+  ports:
+    - port: 80
+      targetPort: 80
