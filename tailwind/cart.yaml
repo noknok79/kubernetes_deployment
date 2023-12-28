@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: tailwindweb
-          image: tailwindtraders/cart.api:latest
+          image: msfttailwindtraders/cart.api:latest
           ports:
             - containerPort: 3001
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: tailwindweb
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: tailwindweb
   ports:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: stocks
-          image: tailwindtraders/stocks.api:latest
+          image: msfttailwindtraders/stocks.api:latest
           ports:
             - containerPort: 8080
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: stocks
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: stocks
   ports:

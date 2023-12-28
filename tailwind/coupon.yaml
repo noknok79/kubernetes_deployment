@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: coupon
-          image: tailwindtraders/coupon.api:latest
+          image: msfttailwindtraders/coupon.api:latest
           ports:
             - containerPort: 3000
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: coupon
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: coupon
   ports:

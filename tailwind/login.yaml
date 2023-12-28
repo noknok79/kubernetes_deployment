@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: login
-          login: tailwindtraders/login.api:latest
+          login: msfttailwindtraders/login.api:latest
           ports:
             - containerPort: 80
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: login
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: login
   ports:

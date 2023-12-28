@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: pop-visit
-          image: tailwindtraders/product-visits.function:latest
+          image: msfttailwindtraders/product-visits.function:latest
           ports:
             - containerPort: 80
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: pop-visit
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: pop-visit
   ports:

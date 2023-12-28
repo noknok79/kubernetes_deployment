@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: profile
-          image: tailwindtraders/profile.api:latest
+          image: msfttailwindtraders/profile.api:latest
           ports:
             - containerPort: 80
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: profile
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: profile
   ports:

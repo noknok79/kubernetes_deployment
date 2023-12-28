@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: pop-prod
-          image: tailwindtraders/popular-product.api:latest
+          image: msfttailwindtraders/popular-product.api:latest
           ports:
             - containerPort: 80
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: pop-prod
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: pop-prod
   ports:

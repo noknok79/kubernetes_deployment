@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: webapi
-          webapi: tailwindtraders/webapigw:latest
+          webapi: msfttailwindtraders/webapigw:latest
           ports:
             - containerPort: 80
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: webapi
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: webapi
   ports:

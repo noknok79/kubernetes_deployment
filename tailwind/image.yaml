@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: image
-          image: tailwindtraders/image-classifier.api:latest
+          image: msfttailwindtraders/image-classifier.api:latest
           ports:
             - containerPort: 80
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: image
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: image
   ports:

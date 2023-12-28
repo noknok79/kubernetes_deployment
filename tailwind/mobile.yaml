@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: mobile
-          mobile: tailwindtraders/mobileapigw:latest
+          mobile: msfttailwindtraders/mobileapigw:latest
           ports:
             - containerPort: 80
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: mobile
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: mobile
   ports:

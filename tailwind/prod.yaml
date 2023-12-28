@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: prod
-          prod: tailwindtraders/product.api:latest
+          prod: msfttailwindtraders/product.api:latest
           ports:
             - containerPort: 80
 
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   name: prod
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: prod
   ports:
