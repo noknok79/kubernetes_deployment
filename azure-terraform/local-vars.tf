@@ -38,6 +38,6 @@ locals {
 locals {
   bastion_inboud_port_map = {
     "230" : "3389",
-    "350" : "22"
+    "350" : "22" 
   }
 }
