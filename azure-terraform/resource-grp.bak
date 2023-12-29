@@ -1,0 +1,20 @@
+
+
+/*
+resource "azurerm_resource_group" "myrg" {
+  name     = "markterra-rg"
+  location = "eastus"
+}
+
+resource "azurerm_resource_group" "rg1" {
+  name     = "markterra-rg1"
+  location = "eastus"
+}
+
+
+resource "azurerm_resource_group" "rg2" {
+  name     = "markterra-rg2"
+  location = "westus"
+  provider = azurerm.provider2-westus #refernce from provider block 
+}
+*/

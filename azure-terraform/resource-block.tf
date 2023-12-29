@@ -1,17 +1,22 @@
 # Create a resource group
+resource "azurerm_resource_group" "myrandomrg" {
+  name     = "${local.resource_name_prefix}-${var.resource_group_name}-${random_string.myrandomstring.id}"
+  location = var.resource_group_location
+  tags     = local.common_tags
+}
 
 resource "azurerm_resource_group" "myrg" {
-  name     = "myterra-rg"
+  name     = "markterra-rg"
   location = "eastus"
 }
 
 resource "azurerm_resource_group" "rg1" {
-  name     = "myterra-rg1"
+  name     = "markterra-rg1"
   location = "eastus"
 }
 
 resource "azurerm_resource_group" "rg2" {
-  name     = "myterra-rg2"
+  name     = "markterra-rg2"
   location = "westus"
   provider = azurerm.provider2-westus #refernce from provider block 
 }
