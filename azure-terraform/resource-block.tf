@@ -1,13 +1,17 @@
 # Create a resource group
+/*
 resource "azurerm_resource_group" "myrandomrg" {
   name     = "${local.resource_name_prefix}-${var.resource_group_name}-${random_string.myrandomstring.id}"
   location = var.resource_group_location
   tags     = local.common_tags
 }
+*/
 
 resource "azurerm_resource_group" "myrg" {
-  name     = "markterra-rg"
-  location = "eastus"
+  name     = "${local.resource_name_prefix}-${var.resource_group_name}-${random_string.myrandomstring.id}"
+  location = var.resource_group_location
+  tags     = local.common_tags
+
 }
 
 resource "azurerm_resource_group" "rg1" {
@@ -50,8 +54,9 @@ resource "azurerm_virtual_network" "myvnet" {
   }
 }
 
+# Resource-3: Create Subnet
 resource "azurerm_subnet" "mysubnet" {
-  name                 = "mysubnet"
+  name                 = "mysubnet-1"
   resource_group_name  = azurerm_resource_group.myrg.name
   virtual_network_name = azurerm_virtual_network.myvnet.name
   address_prefixes     = ["10.0.2.0/24"]

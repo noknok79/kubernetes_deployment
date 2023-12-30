@@ -21,6 +21,17 @@ output "web_subnet_id" {
   value       = azurerm_subnet.websubnet.id
 }
 
+output "web_subnet_nsg_name" {
+  description = "WebTier Subnet NSG"
+  value       = azurerm_network_security_group.websubnetnsg.name
+}
+
+output "web_subnet_nsg_id" {
+  description = "WebTier Subnet NSG id"
+  value       = azurerm_network_security_group.websubnetnsg.id
+}
+
+/*
 #Ouput for App Subnet
 output "app_subnet_name" {
   description = "AppTier Subnet name"
@@ -80,6 +91,8 @@ output "bastionnetsecurityruleinbound" {
   description = "Bastion Subnet NSG Inbound Rule"
   value       = azurerm_network_security_rule.bastionnetsecurityruleinbound
 }
+*/
+
 /*
 #Output for Web Subnet NSG Outbound Rule
 output "webnetsecurityruleoutbound" {
