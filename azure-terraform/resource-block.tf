@@ -14,6 +14,7 @@ resource "azurerm_resource_group" "myrg" {
 
 }
 
+/*
 resource "azurerm_resource_group" "rg1" {
   name     = "markterra-rg1"
   location = "eastus"
@@ -84,4 +85,4 @@ resource "azurerm_network_interface" "myvmnic" {
     public_ip_address_id          = azurerm_public_ip.mypublicip.id
   }
 }
-
+*/
