@@ -23,7 +23,7 @@ resource "azurerm_network_security_group" "dbsubnetnsg" {
 
 resource "azurerm_subnet_network_security_group_association" "dbsubnetnsgassoc" {
   depends_on                = [azurerm_network_security_rule.dbnetsecurityruleinbound]
-  subnet_id                 = azurerm_subnet.dbsubnet.id  
+  subnet_id                 = azurerm_subnet.dbsubnet.id
   network_security_group_id = azurerm_network_security_group.dbsubnetnsg.id
 }
 

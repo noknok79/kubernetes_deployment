@@ -39,15 +39,15 @@ resource "azurerm_network_security_group" "weblinuxsubnetnsg" {
 }
 
 resource "azurerm_network_interface_security_group_association" "weblinuxsubnetnsgassoc" {
-  depends_on                = [azurerm_network_security_rule.weblinuxnetsecurityruleinbound]
-  network_interface_id      = azurerm_network_interface.web_linuxvm_nic.id
+  depends_on           = [azurerm_network_security_rule.weblinuxnetsecurityruleinbound]
+  network_interface_id = azurerm_network_interface.web_linuxvm_nic.id
   #subnet_id                 = azurerm_subnet.websubnet.id
   network_security_group_id = azurerm_network_security_group.weblinuxsubnetnsg.id
 }
 
 # If the key starts with a number, you must use the colon syntax ":" instead of "="
 locals {
-  web_inbound_ports_map = {
+  web_linux_inbound_ports_map = {
     "100" : "80",
     "110" : "443",
     "120" : "22"
@@ -55,7 +55,7 @@ locals {
 }
 
 resource "azurerm_network_security_rule" "weblinuxnetsecurityruleinbound" {
-  for_each                    = local.web_inbound_ports_map
+  for_each                    = local.web_linux_inbound_ports_map
   name                        = "rule-port-${each.value}"
   priority                    = each.key
   direction                   = "Inbound"

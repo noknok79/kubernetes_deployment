@@ -17,7 +17,7 @@ docker run -it -d --name web -p 80:80 noknok79/parts-web:latest
 */
 
 resource "azurerm_linux_virtual_machine" "web-linuxvm" {
-  name                = "${local.resource_name_prefix}-web-linuxvm"
+  name = "${local.resource_name_prefix}-web-linuxvm"
   #computer_name       = "${local.resource_name_prefix}-web-linuxvm"
   resource_group_name = azurerm_resource_group.myrg.name
   location            = azurerm_resource_group.myrg.location
@@ -27,12 +27,12 @@ resource "azurerm_linux_virtual_machine" "web-linuxvm" {
     azurerm_network_interface.web_linuxvm_nic.id
   ]
   admin_ssh_key {
-    username       = "azureuser"
-    public_key     = file("${path.module}/ssh-keys/terraform-azure.pub")
+    username   = "azureuser"
+    public_key = file("${path.module}/ssh-keys/terraform-azure.pub")
   }
   os_disk {
-    name              = "${local.resource_name_prefix}-web-linuxvm-${random_string.myrandomstring.id}"
-    caching           = "ReadWrite"
+    name                 = "${local.resource_name_prefix}-web-linuxvm-${random_string.myrandomstring.id}"
+    caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
   source_image_reference {
@@ -41,7 +41,7 @@ resource "azurerm_linux_virtual_machine" "web-linuxvm" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
-  tags = local.common_tags
+  tags        = local.common_tags
   custom_data = filebase64("${path.module}/app-scripts/install-parts-docker.sh")
   #custom_data = base64encode(local.webvm_custom_data)
 }
