@@ -1,0 +1,56 @@
+[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository[60]
+      Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/root/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {8c94b588-933f-44f6-b6c7-e988e8e17e47} with creation date 2024-01-03 03:04:50Z, activation date 2024-01-03 03:04:50Z, and expiration date 2024-04-02 03:04:50Z.
+[40m[1m[33mwarn[39m[22m[49m: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {8c94b588-933f-44f6-b6c7-e988e8e17e47} may be persisted to storage in unencrypted form.
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository[39]
+      Writing data to file '/root/.aspnet/DataProtection-Keys/key-8c94b588-933f-44f6-b6c7-e988e8e17e47.xml'.
+Hosting environment: Production
+Content root path: /web
+Now listening on: http://[::]:80
+Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://20.242.220.26/static/css/main.05d57ee7.chunk.css - -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware[2]
+      Sending file. Request path: '/static/css/main.05d57ee7.chunk.css'. Physical path: '/web/ClientApp/build/static/css/main.05d57ee7.chunk.css'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://20.242.220.26/static/css/main.05d57ee7.chunk.css - - - 200 49508 text/css 19.1658ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://20.242.220.26/api/settings - -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Tailwind.Traders.Web.Controllers.SettingsController.GetSettings (Tailwind.Traders.Web)'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "GetSettings", controller = "Settings", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult`1[Tailwind.Traders.Web.Settings] GetSettings() on controller Tailwind.Traders.Web.Controllers.SettingsController (Tailwind.Traders.Web).
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[1]
+      Executing action method Tailwind.Traders.Web.Controllers.SettingsController.GetSettings (Tailwind.Traders.Web) - Validation state: Valid
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action method Tailwind.Traders.Web.Controllers.SettingsController.GetSettings (Tailwind.Traders.Web), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 0.3326ms.
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'Tailwind.Traders.Web.Settings'.
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Tailwind.Traders.Web.Controllers.SettingsController.GetSettings (Tailwind.Traders.Web) in 44.2379ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Tailwind.Traders.Web.Controllers.SettingsController.GetSettings (Tailwind.Traders.Web)'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://20.242.220.26/api/settings - - - 200 - application/json;+charset=utf-8 134.7624ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://20.242.220.26/api/personalizer/rank application/json 70
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Tailwind.Traders.Web.Controllers.PersonalizerController.PostRank (Tailwind.Traders.Web)'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "PostRank", controller = "Personalizer", page = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult PostRank(Tailwind.Traders.Web.Controllers.RankCategories) on controller Tailwind.Traders.Web.Controllers.PersonalizerController (Tailwind.Traders.Web).
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[1]
+      Executing action method Tailwind.Traders.Web.Controllers.PersonalizerController.PostRank (Tailwind.Traders.Web) - Validation state: Valid
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action method Tailwind.Traders.Web.Controllers.PersonalizerController.PostRank (Tailwind.Traders.Web), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 1.7067ms.
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Mvc.Infrastructure.ObjectResultExecutor[1]
+      Executing OkObjectResult, writing value of type 'null'.
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Tailwind.Traders.Web.Controllers.PersonalizerController.PostRank (Tailwind.Traders.Web) in 27.3736ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Tailwind.Traders.Web.Controllers.PersonalizerController.PostRank (Tailwind.Traders.Web)'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://20.242.220.26/api/personalizer/rank application/json 70 - 204 0 - 38.7641ms

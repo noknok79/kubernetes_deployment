@@ -43,4 +43,10 @@ terraform.rc
 *.pfx
 *.p12
 
+*.csr
+*.key
+*.crt
+*.pem
+secret*.y*l
+
 
