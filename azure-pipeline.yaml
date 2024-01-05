@@ -1,0 +1,33 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: TerraformInstaller@0
+    displayName: 'Install Terraform'
+    inputs:
+      terraformVersion: '0.14.7'
+
+  - script: |
+      terraform init
+      terraform plan -out=tfplan
+    displayName: 'Terraform Init and Plan'
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Terraform Plan'
+    inputs:
+      targetPath: '$(Pipeline.Workspace)/tfplan'
+      artifactName: 'terraform-plan'
+
+  - script: |
+      terraform apply -auto-approve tfplan
+    displayName: 'Terraform Apply'
