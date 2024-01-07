@@ -14,7 +14,7 @@ pool:
 variables:
   azureSubscriptionEndpoint: 'contosoph-terraform-test-project-sp'
   resourceGroupName: 'k8s-test'
-  storageAccountName: 'k8stestrg-test1'
+  storageAccountName: 'k8stestrg'
 
 steps:
   - task: TerraformInstaller@0
