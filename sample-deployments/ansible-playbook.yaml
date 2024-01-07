@@ -1,0 +1,33 @@
+- name: Deploy Docker, Kubernetes, and Terraform
+  hosts: your_vm_host
+  become: true
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install Kubernetes
+      apt:
+        name: kubectl
+        state: present
+
+    - name: Install Terraform
+      apt:
+        name: terraform
+        state: present
+
+    - name: Install Azure CLI
+      apt:
+        name: azure-cli
+        state: present
+
+    - name: Authenticate with Azure
+      shell: az login
+
+    - name: Create Azure Resource Group
+      shell: az group create --name myResourceGroup --location eastus
+
+    - name: Create Azure VM
+      shell: az vm create --resource-group myResourceGroup --name myVM --image UbuntuLTS --admin-username azureuser --generate-ssh-keys

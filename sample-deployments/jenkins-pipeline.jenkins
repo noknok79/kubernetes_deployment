@@ -1,0 +1,125 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Azure Login') {
+            steps {
+                script {
+                    withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
+                        azureLogin(servicePrincipalId: "${AZURE_CREDENTIALS_USR}", servicePrincipalKey: "${AZURE_CREDENTIALS_PSW}", tenantId: "${AZURE_CREDENTIALS_TENANT}", subscriptionId: "${AZURE_CREDENTIALS_SUBSCRIPTION}") {
+                            sh 'az account show'
+                        }
+                    }
+                }
+            }
+        }
+        
+        stage('Deploy Virtual Machine') {
+            steps {
+                script {
+                    def azureCredentials = credentials('AZURE_CREDENTIALS')
+                    def azureSubscription = azureSubscription(
+                        azureCredentialsId: azureCredentials.id,
+                        displayName: 'Azure Subscription'
+                    )
+                    
+                    def azureCredentialsUsr = credentials('AZURE_CREDENTIALS_USR')
+                    def azureCredentialsPsw = credentials('AZURE_CREDENTIALS_PSW')
+                    def azureCredentialsTenant = credentials('AZURE_CREDENTIALS_TENANT')
+                    def azureCredentialsSubscription = credentials('AZURE_CREDENTIALS_SUBSCRIPTION')
+                    
+                    withCredentials([
+                        azureServicePrincipal(credentialsId: azureCredentialsUsr.id, variable: 'AZURE_CREDENTIALS_USR'),
+                        azureServicePrincipal(credentialsId: azureCredentialsPsw.id, variable: 'AZURE_CREDENTIALS_PSW'),
+                        azureServicePrincipal(credentialsId: azureCredentialsTenant.id, variable: 'AZURE_CREDENTIALS_TENANT'),
+                        azureServicePrincipal(credentialsId: azureCredentialsSubscription.id, variable: 'AZURE_CREDENTIALS_SUBSCRIPTION')
+                    ]) {
+                        azure.withAzureSubscription(azureSubscription) {
+                            def resourceGroupName = 'myResourceGroup'
+                            def virtualNetworkName = 'myVirtualNetwork'
+                            def subnetName = 'mySubnet'
+                            def nsgName = 'myNSG'
+                            def vmName = 'myVM'
+                            def privateIP = '10.0.0.4'
+                            def publicIPName = 'myPublicIP'
+                            
+                            // Create resource group
+                            azure.executeCommand("group create --name ${resourceGroupName} --location westus2")
+                            
+                            // Create virtual network
+                            azure.executeCommand("network vnet create --resource-group ${resourceGroupName} --name ${virtualNetworkName} --address-prefixes 10.0.0.0/16")
+                            
+                            // Create subnet
+                            azure.executeCommand("network vnet subnet create --resource-group ${resourceGroupName} --vnet-name ${virtualNetworkName} --name ${subnetName} --address-prefixes 10.0.0.0/24")
+                            
+                            // Create NSG
+                            azure.executeCommand("network nsg create --resource-group ${resourceGroupName} --name ${nsgName}")
+                            
+                            // Create public IP
+                            azure.executeCommand("network public-ip create --resource-group ${resourceGroupName} --name ${publicIPName} --allocation-method Static")
+                            
+                            // Create virtual machine
+                            azure.executeCommand("vm create --resource-group ${resourceGroupName} --name ${vmName} --image UbuntuLTS --admin-username admin --admin-password password123 --vnet-name ${virtualNetworkName} --subnet ${subnetName} --nsg ${nsgName} --public-ip-address ${publicIPName} --private-ip-address ${privateIP}")
+                        }
+                    }
+                }
+            }
+        }
+        #Insert your other stages
+
+        stage('Deploy Desired State Configuration') {
+            steps {
+                script {
+                    def resourceGroupName = 'myResourceGroup'
+                    def vmName = 'myVM'
+                    def dscConfigurationName = 'myDSCConfiguration'
+                    def dscConfigurationVersion = '1.0'
+                    
+                    // Upload DSC configuration to Azure Storage Account
+                    azure.executeCommand("storage blob upload --account-name myStorageAccount --account-key myStorageAccountKey --container-name myContainer --name ${dscConfigurationName}.zip --type block --source ${dscConfigurationName}.zip")
+                    
+                    // Create DSC extension for the virtual machine
+                    azure.executeCommand("vm extension set --resource-group ${resourceGroupName} --vm-name ${vmName} --name DSC --publisher Microsoft.Powershell --version 2.77 --protected-settings '{\"configurationUrlSasToken\": \"?sv=2019-12-12&ss=b&srt=sco&sp=rwdlacx&se=2022-01-01T00:00:00Z&st=2021-01-01T00:00:00Z&spr=https&sig=mySignature\"}' --settings '{\"configurationFunction\": \"${dscConfigurationName}.zip\\\\${dscConfigurationName}.ps1\", \"properties\": {\"ConfigurationID\": \"${dscConfigurationName}\", \"ConfigurationVersion\": \"${dscConfigurationVersion}\", \"DataBlobUri\": \"https://myStorageAccount.blob.core.windows.net/myContainer/${dscConfigurationName}.zip\"}}'")
+                }
+            }
+        }
+
+        stage('Deploy Azure Web App') {
+            steps {
+                script {
+                    def resourceGroupName = 'myResourceGroup'
+                    def appName = 'myWebApp'
+                    def dockerImage = 'noknok79/parts-web'
+                    
+                    // Login to Azure
+                    azureLogin(servicePrincipalId: "${AZURE_CREDENTIALS_USR}", servicePrincipalKey: "${AZURE_CREDENTIALS_PSW}", tenantId: "${AZURE_CREDENTIALS_TENANT}", subscriptionId: "${AZURE_CREDENTIALS_SUBSCRIPTION}")
+                    
+                    // Create or update the resource group
+                    azure.executeCommand("group create --name ${resourceGroupName} --location westus2")
+                    
+                    // Create or update the web app
+                    azure.executeCommand("webapp create --resource-group ${resourceGroupName} --name ${appName} --plan myAppServicePlan --runtime 'DOCKER|${dockerImage}'")
+                }
+            }
+        }
+
+stage('Deploy Ansible with Desired State Configuration') {
+    steps {
+        script {
+            def resourceGroupName = 'myResourceGroup'
+            def vmName = 'myVM'
+            def dscConfigurationName = 'myDSCConfiguration'
+            def dscConfigurationVersion = '1.0'
+            def ansiblePlaybook = 'playbook.yml'
+            
+            // Upload Ansible playbook to Azure Storage Account
+            azure.executeCommand("storage blob upload --account-name myStorageAccount --account-key myStorageAccountKey --container-name myContainer --name ${ansiblePlaybook} --type block --source ${ansiblePlaybook}")
+            
+            // Create DSC extension for the virtual machine
+            azure.executeCommand("vm extension set --resource-group ${resourceGroupName} --vm-name ${vmName} --name DSC --publisher Microsoft.Powershell --version 2.77 --protected-settings '{\"configurationUrlSasToken\": \"?sv=2019-12-12&ss=b&srt=sco&sp=rwdlacx&se=2022-01-01T00:00:00Z&st=2021-01-01T00:00:00Z&spr=https&sig=mySignature\"}' --settings '{\"configurationFunction\": \"${ansiblePlaybook}\", \"properties\": {\"ConfigurationID\": \"${dscConfigurationName}\", \"ConfigurationVersion\": \"${dscConfigurationVersion}\", \"DataBlobUri\": \"https://myStorageAccount.blob.core.windows.net/myContainer/${ansiblePlaybook}\"}}'")
+        }
+    }
+}
+
+    }
+}
