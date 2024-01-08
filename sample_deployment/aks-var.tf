@@ -2,7 +2,7 @@
 variable "location" {
   type        = string
   description = "Azure Region where all these resources will be provisioned"
-  default     = "Central US"
+  default     = "East US"
 }
 
 # Azure Resource Group Name
@@ -34,6 +34,13 @@ variable "windows_admin_username" {
 
 variable "windows_admin_password" {
   type        = string
-  default     = "P@ssw0rd1234"
+  default     = "m@rkV!09!09!09!09"
   description = "Variables for windows admin password"
+}
+
+variable "linux_username" {
+  type        = string
+  default     = "azureuser"
+  description = "Variables for linux username"
+
 }
