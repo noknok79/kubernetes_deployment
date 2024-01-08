@@ -1,0 +1,120 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">= 3"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
+resource "azurerm_resource_group" "sample-deploy-rg" {
+  name     = "sample-deploy-rg"
+  location = "East US"
+}
+
+resource "azurerm_virtual_network" "sample-deploy-vnet" {
+  name                = "sample-deploy-vnet"
+  address_space       = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.sample-deploy-rg.location
+  resource_group_name = azurerm_resource_group.sample-deploy-rg.name
+}
+
+resource "azurerm_subnet" "sample-deploy-subnet" {
+  name                 = "sample-deploy-subnet"
+  resource_group_name  = azurerm_resource_group.sample-deploy-rg.name
+  virtual_network_name = azurerm_virtual_network.sample-deploy-vnet.name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+resource "azurerm_network_security_group" "sample-deploy-nsg" {
+  name                = "sample-deploy-nsg"
+  location            = azurerm_resource_group.sample-deploy-rg.location
+  resource_group_name = azurerm_resource_group.sample-deploy-rg.name
+}
+
+resource "azurerm_public_ip" "sample-deploy-pip" {
+  name                = "sample-deploy-pip"
+  location            = azurerm_resource_group.sample-deploy-rg.location
+  resource_group_name = azurerm_resource_group.sample-deploy-rg.name
+  allocation_method   = "Static"
+}
+
+resource "azurerm_network_interface" "sample-deploy-nic" {
+  name                = "sample-deploy-nic"
+  location            = azurerm_resource_group.sample-deploy-rg.location
+  resource_group_name = azurerm_resource_group.sample-deploy-rg.name
+
+  ip_configuration {
+    name                          = "example-ip-config"
+    subnet_id                     = azurerm_subnet.sample-deploy-subnet.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.sample-deploy-pip.id
+  }
+}
+data "azurerm_public_ip" "pip" {
+  name                = azurerm_public_ip.sample-deploy-pip.name
+  resource_group_name = azurerm_resource_group.sample-deploy-rg.name
+  depends_on          = [azurerm_virtual_machine.sample-deploy-vm]
+}
+
+resource "azurerm_virtual_machine" "sample-deploy-vm" {
+  name                             = "sample-deploy-vm"
+  location                         = azurerm_resource_group.sample-deploy-rg.location
+  resource_group_name              = azurerm_resource_group.sample-deploy-rg.name
+  network_interface_ids            = [azurerm_network_interface.sample-deploy-nic.id]
+  vm_size                          = "Standard_DS2_v2"
+  delete_data_disks_on_termination = true
+  #custom_data = filebase64("${path.module}/app-scripts/install-parts-docker.sh")
+
+  storage_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
+    version   = "latest"
+  }
+
+  storage_os_disk {
+    name              = "example-osdisk"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
+  }
+/*
+  os_profile {
+    computer_name  = "examplevm"
+    admin_username = "adminuser"
+    admin_password = "Password1234!"
+  }
+*/
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+/*
+  provisioner "remote-exec" {
+    inline = [
+      "/app-scripts/testscript.sh"
+    ]
+  }
+*/
+  /* 
+  provisioner "remote-exec" {
+    script = "/app-scripts/testscript.sh"
+  }
+*/
+}
+
+resource "null_resource" "default" {
+  depends_on = [data.azurerm_public_ip.pip]
+  connection {
+    host     = data.azurerm_public_ip.pip.ip_address
+    user     = "adminuser"
+    password = "Password1234!"
+  }
+  provisioner "remote-exec" {
+    script = "/app-scripts/my_script.sh"
+  }
+}
