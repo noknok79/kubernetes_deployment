@@ -20,8 +20,17 @@ variables:
   storageAccountName: 'terratfstatestrg2'
   terraformDirectory: 'sample_deployment'
 
-
 steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      addToPath: true
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
+    displayName: 'Install Python dependencies'
+    
   - task: AzureCLI@2
     displayName: 'Azure CLI - Login'
     inputs:
