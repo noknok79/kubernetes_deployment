@@ -14,12 +14,9 @@ pool:
 variables:
   azureSubscriptionEndpoint: 'win365enterprise-terra-deploy-rg'
   resourceGroupName: 'terra-deploy-rg'
-
-  storageAccountName: 'k8stestrg'
   servicePrincipalId: 1b88e6b9-1666-4eb0-9502-3b0bd6988557
   servicePrincipalKey: LiQ8Q~~uCK4CtzCcH7Kww3BrD6LP48ap2FdrqcXP
   tenantId: cab4c3be-84af-48f5-960f-7415daff3a80
-
   storageAccountName: 'terratfstatestrg2'
 
 
