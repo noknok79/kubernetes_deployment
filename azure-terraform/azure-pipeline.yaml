@@ -29,7 +29,7 @@ steps:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az login --service-principal -u $(servicePrincipalId) -p $(servicePrincipalKey) --tenant $(tenantId)
-        cd sample_deployment
+        
 
   - task: TerraformInstaller@0
     displayName: 'Install Terraform'
@@ -37,6 +37,7 @@ steps:
       terraformVersion: 'v1.6.6'
 
   - script: |
+      
       terraform init
       terraform plan -out=tfplan
     displayName: 'Terraform Init and Plan'
