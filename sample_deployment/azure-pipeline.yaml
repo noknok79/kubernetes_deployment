@@ -14,14 +14,14 @@ pool:
 variables:
   azureSubscriptionEndpoint: 'win365enterprise-terra-deploy-rg'
   resourceGroupName: 'terra-deploy-rg'
-<<<<<<< HEAD
+
   storageAccountName: 'k8stestrg'
   servicePrincipalId: 1b88e6b9-1666-4eb0-9502-3b0bd6988557
   servicePrincipalKey: LiQ8Q~~uCK4CtzCcH7Kww3BrD6LP48ap2FdrqcXP
   tenantId: cab4c3be-84af-48f5-960f-7415daff3a80
-=======
+
   storageAccountName: 'terratfstatestrg2'
->>>>>>> 0a211ec031384627b85e5af6db5a38b9d5a1b699
+
 
 steps:
   - task: AzureCLI@2
