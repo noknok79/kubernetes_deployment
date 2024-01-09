@@ -1,0 +1,21 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: CopyFiles@2
+    displayName: 'Copy Terraform files'
+    inputs:
+      SourceFolder: 'sample_deployment'
+      Contents: '**/*.tf'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/terraform'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Terraform files'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/terraform'
+      ArtifactName: 'TerraformFiles'
