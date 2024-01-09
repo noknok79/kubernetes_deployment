@@ -18,7 +18,7 @@ variables:
   servicePrincipalKey: LiQ8Q~~uCK4CtzCcH7Kww3BrD6LP48ap2FdrqcXP
   tenantId: cab4c3be-84af-48f5-960f-7415daff3a80
   storageAccountName: 'terratfstatestrg2'
-  terraformDirectory: 'azure-terraform'
+  terraformDirectory: 'sample_deployment'
 
 
 steps:
