@@ -13,11 +13,8 @@ pool:
 
 variables:
   azureSubscriptionEndpoint: 'win365enterprise-terra-deploy-rg'
-<<<<<<< HEAD
   resourceGroupName: 'terra-deploy-rg'
-=======
   resourceGroupName: 'k8s-test'
->>>>>>> cac3d9dfc08357f0c4ab930e41744c8a83f615c8
   storageAccountName: 'k8stestrg'
 
 steps:
