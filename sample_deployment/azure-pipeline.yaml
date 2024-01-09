@@ -12,7 +12,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  azureSubscriptionEndpoint: 'contosoph-terraform-test-project-sp'
+  azureSubscriptionEndpoint: 'win365enterprise-terra-deploy-rg'
   resourceGroupName: 'k8s-test'
   storageAccountName: 'k8stestrg'
 
