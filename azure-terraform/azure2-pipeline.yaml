@@ -38,7 +38,7 @@ steps:
   - script: |
       python -m pip install --upgrade pip
       pip install -r requirements.txt
-      displayName: 'Install Python dependencies'
+    displayName: 'Install Python dependencies'
     
   - task: AzureCLI@2
     displayName: 'Azure CLI - Login'
@@ -69,7 +69,7 @@ steps:
   - script: |
       cd $(terraformDirectory)
       terraform apply -auto-approve tfplan
-      displayName: 'Terraform Apply'
+    displayName: 'Terraform Apply'
 
   - task: PublishPipelineArtifact@1
     inputs:
