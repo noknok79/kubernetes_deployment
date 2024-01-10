@@ -25,7 +25,7 @@ terraform {
       version = "~> 3.0"
     }
   }
-
+/*
   # Terraform State Storage to Azure Storage Container
   backend "azurerm" {
     resource_group_name  = "terraform-aks-storage-rg"
@@ -36,7 +36,7 @@ terraform {
   }
 }
 
-
+*/
 
 # 2. Terraform Provider Block for AzureRM
 provider "azurerm" {
