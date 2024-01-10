@@ -38,7 +38,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'terraform init'
-    workingDirectory: '/sample_deployment'
+    workingDirectory: '$(Build.ArtifactStagingDirectory)'
 
 - task: TerraformTaskV4@4
   inputs:
