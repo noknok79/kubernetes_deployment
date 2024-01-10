@@ -13,7 +13,7 @@ variables:
   servicePrincipalKey: LiQ8Q~~uCK4CtzCcH7Kww3BrD6LP48ap2FdrqcXP
   tenantId: cab4c3be-84af-48f5-960f-7415daff3a80
   storageAccountName: 'terratfstatestrg2'
-  terraformDirectory: 'sample_deployment'
+  terraformDirectory: '- task: TerraformTaskV4@4
 
 steps:
   - task: CopyFiles@2
@@ -41,29 +41,39 @@ steps:
         az login --service-principal -u $(servicePrincipalId) -p $(servicePrincipalKey) --tenant $(tenantId)
         
   - task: TerraformInstaller@0
-    displayName: 'Install Terraform'
     inputs:
       terraformVersion: 'v1.6.6'
-
-  - script: |
-      cd $(terraformDirectory)
-      terraform init
-      terraform plan -out=tfplan
-    displayName: 'Terraform Init and Plan'
-
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish Terraform Plan'
+  - task: TerraformTaskV4@4
     inputs:
-      targetPath: '$(Pipeline.Workspace)/tfplan'
-      artifactName: 'terraform-plan'
-
-  - script: |
-      cd $(terraformDirectory)
-      terraform apply -auto-approve tfplan
-    displayName: 'Terraform Apply'
-
-  - task: PublishPipelineArtifact@1
+      provider: 'azurerm'
+      command: 'init'
+      backendServiceArm: 'win365ent-tennant'
+      backendAzureRmResourceGroupName: 'terraform-aks-storage-rg'
+      backendAzureRmStorageAccountName: 'terratfstatestrg2'
+      backendAzureRmContainerName: 'tfstatefiles'
+  
+  - task: TerraformTaskV4@4
     inputs:
-      targetPath: '$(Pipeline.Workspace)'
-      artifactName: 'terraform-artifact'
-      displayName: 'Publish Terraform artifact'
+      provider: 'azurerm'
+      command: 'validate'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/sample_deployment'
+
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      environmentServiceNameAzureRM: 'win365ent-tennant'
+  
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/sample_deployment'
+      environmentServiceNameAzureRM: 'win365ent-tennant'
+  
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/sample_deployment'
+      environmentServiceNameAzureRM: 'win365ent-tennant'
