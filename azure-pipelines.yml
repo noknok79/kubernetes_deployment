@@ -1,0 +1,58 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'sample_deployment'
+    Contents: '**'
+    TargetFolder: $(Build.ArtifactStagingDirectory)
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'win365ent-tennant'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az login --service-principal -t cab4c3be-84af-48f5-960f-7415daff3a80 -u 1b88e6b9-1666-4eb0-9502-3b0bd6988557 -p LiQ8Q~~uCK4CtzCcH7Kww3BrD6LP48ap2FdrqcXP'
+
+
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'win365ent-tennant'
+    backendAzureRmResourceGroupName: 'terraform-aks-storage-rg'
+    backendAzureRmStorageAccountName: 'terratfstatestrg2'
+    backendAzureRmContainerName: 'tfstatefiles'
+
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    environmentServiceNameAzureRM: 'win365ent-tennant'
+
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    environmentServiceNameAzureRM: 'win365ent-tennant'
