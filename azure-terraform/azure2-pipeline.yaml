@@ -16,6 +16,7 @@ variables:
   terraformDirectory: '- task: TerraformTaskV4@4
 
 steps:
+
   - task: CopyFiles@2
     displayName: 'Copy Terraform files'
     inputs:
@@ -28,8 +29,6 @@ steps:
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)/terraform'
       ArtifactName: 'TerraformFiles'
-      
-  
     
   - task: AzureCLI@2
     displayName: 'Azure CLI - Login'
@@ -43,6 +42,8 @@ steps:
   - task: TerraformInstaller@0
     inputs:
       terraformVersion: 'v1.6.6'
+
+
   - task: TerraformTaskV4@4
     inputs:
       provider: 'azurerm'
