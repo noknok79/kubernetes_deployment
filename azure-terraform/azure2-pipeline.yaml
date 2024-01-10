@@ -16,20 +16,6 @@ variables:
   terraformDirectory: '- task: TerraformTaskV4@4
 
 steps:
-
-  - task: CopyFiles@2
-    displayName: 'Copy Terraform files'
-    inputs:
-      SourceFolder: 'sample_deployment'
-      Contents: '**/*.tf'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)/terraform'
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Terraform files'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/terraform'
-      ArtifactName: 'TerraformFiles'
-    
   - task: AzureCLI@2
     displayName: 'Azure CLI - Login'
     inputs:
