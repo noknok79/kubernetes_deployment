@@ -9,7 +9,7 @@
 # 1. Terraform Settings Block
 terraform {
   # 1. Required Version Terraform
-  required_version = ">= 1.0"
+  required_version = ">= 1"
   # 2. Required Terraform Providers  
   required_providers {
     azurerm = {
@@ -32,7 +32,7 @@ terraform {
     storage_account_name = "terratfstatestrg2"
     #storage_account_name = "terratfstatestrg"
     container_name = "tfstatefiles"
-    key            = "uat.terraform.tfstate"
+    key            = "terracustomvnet.tfstate"
   }
 }
 
