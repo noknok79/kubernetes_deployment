@@ -62,3 +62,9 @@ steps:
       cd $(terraformDirectory)
       terraform apply -auto-approve tfplan
     displayName: 'Terraform Apply'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Pipeline.Workspace)'
+      artifactName: 'terraform-artifact'
+      displayName: 'Publish Terraform artifact'
