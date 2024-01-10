@@ -39,11 +39,13 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
+    commandOptions: '-reconfigure'
     backendServiceArm: 'win365ent-tennant'
     backendAzureRmResourceGroupName: 'terraform-aks-storage-rg'
     backendAzureRmStorageAccountName: 'terratfstatestrg2'
     backendAzureRmContainerName: 'tfstatefiles'
     backendAzureRmKey: 'uat.terraform.tfstate'
+
 
 - task: TerraformTaskV4@4
   inputs:
