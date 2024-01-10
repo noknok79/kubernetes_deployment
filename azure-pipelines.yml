@@ -33,7 +33,7 @@ steps:
   inputs:
     terraformVersion: 'latest'
 
-- task: TerraformTaskV4@4
+- task: Terraform Init
   inputs:
     provider: 'azurerm'
     command: 'init'
@@ -43,14 +43,14 @@ steps:
     backendAzureRmContainerName: 'tfstatefiles'
     backendAzureRmKey: 'uat.terraform.tfstate'
 
-- task: TerraformTaskV4@4
+- task: Terraform Plan
   inputs:
     provider: 'azurerm'
     command: 'plan'
     workingDirectory: '$(System.DefaultWorkingDirectory)/sample_deployment/'
     environmentServiceNameAzureRM: 'win365ent-tennant'
 
-- task: TerraformTaskV4@4
+- task: Terraform Apply
   inputs:
     provider: 'azurerm'
     command: 'apply'
