@@ -6,6 +6,15 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  azureSubscriptionEndpoint: 'win365ent-tennant'
+  resourceGroupName: 'terra-deploy-rg'
+  servicePrincipalId: 1b88e6b9-1666-4eb0-9502-3b0bd6988557
+  servicePrincipalKey: LiQ8Q~~uCK4CtzCcH7Kww3BrD6LP48ap2FdrqcXP
+  tenantId: cab4c3be-84af-48f5-960f-7415daff3a80
+  storageAccountName: 'terratfstatestrg2'
+  terraformDirectory: 'sample_deployment'
+
 steps:
   - task: CopyFiles@2
     displayName: 'Copy Terraform files'
@@ -19,3 +28,51 @@ steps:
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)/terraform'
       ArtifactName: 'TerraformFiles'
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      addToPath: true
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
+    displayName: 'Install Python dependencies'
+    
+  - task: AzureCLI@2
+    displayName: 'Azure CLI - Login'
+    inputs:
+      azureSubscription: $(azureSubscriptionEndpoint)
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az login --service-principal -u $(servicePrincipalId) -p $(servicePrincipalKey) --tenant $(tenantId)
+        
+  - task: TerraformInstaller@0
+    displayName: 'Install Terraform'
+    inputs:
+      terraformVersion: 'v1.6.6'
+
+  - script: |
+      cd $(terraformDirectory)
+      terraform init
+      terraform plan -out=tfplan
+    displayName: 'Terraform Init and Plan'
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Terraform Plan'
+    inputs:
+      targetPath: '$(Pipeline.Workspace)/tfplan'
+      artifactName: 'terraform-plan'
+
+  - script: |
+      cd $(terraformDirectory)
+      terraform apply -auto-approve tfplan
+    displayName: 'Terraform Apply'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Pipeline.Workspace)'
+      artifactName: 'terraform-artifact'
+      displayName: 'Publish Terraform artifact'
