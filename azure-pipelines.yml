@@ -34,20 +34,21 @@ steps:
 - task: TerraformInstaller@1
   inputs:
     terraformVersion: 'latest'
-
 - task: TerraformTaskV4@4
   inputs:
     provider: 'azurerm'
-    command: 'custom'
-    customCommand: 'terraform init'
-    outputTo: 'console'
-    environmentServiceNameAzureRM: 'win365ent-tennant'
+    command: 'init'
+    backendServiceArm: 'win365ent-tennant'
+    backendAzureRmResourceGroupName: 'terraform-aks-storage-rg'
+    backendAzureRmStorageAccountName: 'terratfstatestrg2'
+    backendAzureRmContainerName: 'tfstatefiles'
+    backendAzureRmKey: 'uat.terraform.tfstate'
 
 - task: TerraformTaskV4@4
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/sample_deployment'
+    workingDirectory: '$(Build.ArtifactStagingDirectory)'
     environmentServiceNameAzureRM: 'win365ent-tennant'
 
 - task: TerraformTaskV4@4
