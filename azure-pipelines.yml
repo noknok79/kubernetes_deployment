@@ -30,11 +30,12 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: 'az login --service-principal -t cab4c3be-84af-48f5-960f-7415daff3a80 -u 1b88e6b9-1666-4eb0-9502-3b0bd6988557 -p LiQ8Q~~uCK4CtzCcH7Kww3BrD6LP48ap2FdrqcXP'
 
-- task: TerraformInstallation@1
+
+- task: TerraformInstaller@1
   inputs:
     terraformVersion: 'latest'
 
-- task: TerraformInit@2
+- task: TerraformTaskV4@4
   inputs:
     provider: 'azurerm'
     command: 'init'
@@ -44,16 +45,15 @@ steps:
     backendAzureRmContainerName: 'tfstatefiles'
     backendAzureRmKey: 'uat.terraform.tfstate'
 
-- task: TerraformPlan@3
+- task: TerraformTaskV4@4
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/sample_deployment/'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/sample_deployment'
     environmentServiceNameAzureRM: 'win365ent-tennant'
 
-- task: TerraformApply@4
+- task: TerraformTaskV4@4
   inputs:
     provider: 'azurerm'
     command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/sample_deployment/'
     environmentServiceNameAzureRM: 'win365ent-tennant'
