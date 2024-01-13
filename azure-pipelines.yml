@@ -9,51 +9,9 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
+# Stage-1: Terraform Validate Stage
+## Step-1: Publish Artifacts to Pipeline (Pipeline artifacts provide a way to share files between stages in a pipeline or between different pipelines. )
+## Step-2: Install Latest Terraform (0.13.5) (Ideally not needed if we use default Ubuntu Agents)
+## Step-3: Validate Terraform Manifests (terraform init, terraform validate)
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'sample_deployment'
-    Contents: '**'
-    TargetFolder: $(Build.ArtifactStagingDirectory)
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'win365ent-tennant'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az login --service-principal -t cab4c3be-84af-48f5-960f-7415daff3a80 -u 1b88e6b9-1666-4eb0-9502-3b0bd6988557 -p LiQ8Q~~uCK4CtzCcH7Kww3BrD6LP48ap2FdrqcXP'
-
-
-- task: TerraformInstaller@1
-  inputs:
-    terraformVersion: 'latest'
-
-- task: TerraformTaskV4@4
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    backendServiceArm: 'win365ent-tennant'
-    backendAzureRmResourceGroupName: 'terraform-aks-storage-rg'
-    backendAzureRmStorageAccountName: 'terratfstatestrg2'
-    backendAzureRmContainerName: 'tfstatefiles'
-    backendAzureRmKey: 'uat.terraform.tfstate'
-
-- task: TerraformTaskV4@4
-  inputs:
-    provider: 'azurerm'
-    command: 'plan'
-    workingDirectory: '$(Build.ArtifactStagingDirectory)'
-    environmentServiceNameAzureRM: 'win365ent-tennant'
-
-- task: TerraformTaskV4@4
-  inputs:
-    provider: 'azurerm'
-    command: 'apply'
-    environmentServiceNameAzureRM: 'win365ent-tennant'
+:
