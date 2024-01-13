@@ -5,7 +5,7 @@
 # 3. Terraform Remote State Storage with Azure Storage Account (last step of this section)
 # 2. Terraform Provider Block for AzureRM
 # 3. Terraform Resource Block: Define a Random Pet Resource
-
+ 
 # 1. Terraform Settings Block
 terraform {
   # 1. Required Version Terraform
