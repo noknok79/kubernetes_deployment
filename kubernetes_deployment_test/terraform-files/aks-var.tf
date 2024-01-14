@@ -16,13 +16,13 @@ variable "resource_group_name" {
 variable "environment" {
   type        = string
   description = "This variable defines the Environment"
-  default     = "dev2"
+  #default     = "dev2"
 }
 
 
 variable "ssh_public_key" {
   type        = string
-  default     = "~/.ssh/aks-prod/aksprodsshkey.pub"
+  #default     = "~/.ssh/aks-prod/aksprodsshkey.pub"
   description = "Variables for ssh key"
 }
 
